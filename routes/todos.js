@@ -3,21 +3,7 @@ const router = new Router();
 const schemas = require("../middlewares/schemas");
 const joiValidator = require("../middlewares/joiValidator");
 const Todo = require("../models/Todo");
-const isValidID = require("./isValidID");
-
-router.post("/login", joiValidator(schemas.login), async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (user) {
-    if (bcrypt.compareSync(req.body.password, user.password)) {
-      const token = user.generateAuthToken();
-      res.send({ message: "Login successfully", token: token });
-    } else {
-      res.status(401).send({ message: "Login not successfully" });
-    }
-  } else {
-    res.status(404).send({ message: "Login not successfully" });
-  }
-});
+const isValidID = require("../middlewares/isValidID");
 
 router.get("/", async (req, res) => {
   try {
@@ -33,8 +19,10 @@ router.post("/", joiValidator(schemas.newTodo), async (req, res) => {
       title: req.body.title,
       author: req.user._id,
     });
-    await todo.save();
-    res.send({ message: "Todo Added" });
+    await todo.save(function (err, obj) {
+      if (err) res.send({ error: err.message });
+      res.send(obj);
+    });
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
@@ -71,7 +59,7 @@ router.delete("/all", async (req, res) => {
 router.delete("/:id", isValidID, async (req, res) => {
   try {
     const todo = await Todo.findByIdAndRemove(req.params.id);
-    res.send({ message: "Deleted Successfully" });
+    res.send(todo);
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
