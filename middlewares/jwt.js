@@ -6,7 +6,10 @@ module.exports = async (req, res, next) => {
 
   if (!token) return res.status(401).send({ message: "Invalid token" });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "TATATATATAYAYAYAYA"
+    );
     const user = await User.findById(decoded._id);
     if (user) {
       req.user = user;

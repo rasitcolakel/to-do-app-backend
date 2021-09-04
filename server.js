@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3001;
 var cors = require("cors");
 
 app.use(express.json());
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3000" }));
 
 require("dotenv").config();
 require("./start-up/db")();
