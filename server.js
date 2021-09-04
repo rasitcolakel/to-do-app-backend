@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 3003;
+const port = process.env.PORT || 3003;
 var cors = require("cors");
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 require("dotenv").config();
 require("./start-up/db")();
