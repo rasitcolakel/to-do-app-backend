@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const uri =
-  "mongodb+srv://admin:j9WU7MQ0gT9H4yBH@cluster0.pijyl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_URI;
 module.exports = () => {
   mongoose
     .connect(uri, {
