@@ -9,7 +9,9 @@ app.use(cors());
 require("dotenv").config();
 require("./start-up/db")();
 require("./start-up/router")(app);
-
+app.get("/", function (req, res) {
+  res.send({ title: "welcome" });
+});
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
